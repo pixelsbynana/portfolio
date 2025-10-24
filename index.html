@@ -299,6 +299,18 @@
                 min-height: calc(100vh - 3.25rem); /* viewport minus approximate header height */
             }
         }
+
+        /* Ensure project card background follows theme:
+           - light mode: use the page light bg
+           - dark mode: use the dark bg */
+        #project-card-container .pixel-box,
+        .project-card {
+            background-color: var(--bg-light) !important;
+        }
+        .dark #project-card-container .pixel-box,
+        .dark .project-card {
+            background-color: var(--bg-dark) !important;
+        }
     </style>
 </head>
 <body class="transition-colors duration-300">
