@@ -3,7 +3,7 @@
 Welcome to my personal portfolio website - a space where I share a bit about myself, showcase my (very basic) projects and experiment with front-end design ideas.
 It’s still a work in progress, but I’m really happy with how it’s coming together!
 
-🔗 Live site: pixelsbynana.github.io/portfolio
+🔗 Live site: [https://pixelsbynana.github.io/portfolio](https://pixelsbynana.github.io/portfolio)
 
 ## ✨ Features
 - 🎵 Interactive sound effects for a playful user experience
