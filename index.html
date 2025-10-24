@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nana's Portfolio</title>
+    <link rel="icon" href="media/favicon.png" type="image/png">
+    <link rel="apple-touch-icon" href="media/favicon.png">
+    <!-- Load Tailwind CSS --><script src="https://cdn.tailwindcss.com"></script>
+     <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet">
+    <style>
+        /* Custom Font & Base Style */
+        :root {
+            --bg-light: #ffffff;
+            --text-light: #000000;
+            --accent-light: #e6a76c; /* Button color */
+        }
+        .dark {
+            --bg-dark: #1f2937; /* A deep, dark slate */
+            --text-dark: #ffffff;
+            --accent-dark: #818cf8; /* Lighter accent for dark mode */
+        }
+
+        body {
+            font-family: 'Pixelify Sans', Courier, monospace;
+            background-color: var(--bg-light);
+            color: var(--text-light);
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .dark body {
+            background-color: var(--bg-dark);
+            color: var(--text-dark);
+        }
+
+        /* --- PIXEL ART STYLES --- */
+
+        /* General Pixel Border and Shadow */
+        .pixel-box {
+            border: 3px solid var(--text-light);
+            box-shadow: 4px 4px 0 0 var(--text-light);
+            transition: all 0.1s ease-in-out;
+        }
+        .dark .pixel-box {
+            border-color: var(--text-dark);
+            box-shadow: 4px 4px 0 0 var(--text-dark);
+        }
+
+        /* Pixel Buttons */
+        .pixel-button {
+            border: 3px solid var(--text-light);
+            box-shadow: 4px 4px 0 0 var(--text-light);
+            background-color: transparent;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+        }
+        .dark .pixel-button {
+            border-color: var(--text-dark);
+            box-shadow: 4px 4px 0 0 var(--text-dark);
+            color: var(--text-dark);
+        }
+
+        .pixel-button:hover {
+            box-shadow: 2px 2px 0 0 var(--text-light);
+            transform: translate(2px, 2px);
+        }
+        .dark .pixel-button:hover {
+            box-shadow: 2px 2px 0 0 var(--text-dark);
+        }
+        
+        /* Active Navigation Button */
+        .nav-active {
+            background-color: var(--text-light) !important;
+            color: var(--bg-light) !important;
+        }
+        .dark .nav-active {
+            background-color: var(--text-dark) !important;
+            color: var(--bg-dark) !important;
+        }
+        
+        /* Start Button Specifics */
+        .start-button {
+            background-color: var(--accent-light);
+            border-color: var(--text-light);
+            color: var(--text-light);
+        }
+        .start-button:hover {
+             background-color: #d19760;
+        }
+        .dark .start-button {
+            background-color: var(--accent-dark);
+            border-color: var(--text-dark);
+            color: var(--text-dark);
+        }
+        .dark .start-button:hover {
+             background-color: #717de3;
+        }
+
+        /* Speech Bubble */
+        .speech-bubble {
+            position: relative;
+            background: var(--bg-light);
+            border: 3px solid var(--text-light);
+            border-radius: 10px; /* rounded corners */
+            padding: 0.5rem 0.75rem;
+            text-align: center;
+            font-size: 0.875rem;
+
+            /* Increased width */
+            width: 220px;       /* adjust value as needed */
+            max-width: 90%;     /* responsive cap on small screens */
+            box-sizing: border-box;
+            word-wrap: break-word;
+        }
+        .dark .speech-bubble {
+            background: var(--bg-dark);
+            border-color: var(--text-dark);
+        }
+
+        /* Speech Bubble Pointer (Bottom-left/Bottom-right) */
+        .speech-bubble::after, .speech-bubble::before {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 0;
+            border: solid transparent;
+            pointer-events: none;
+        }
+        
+        .bubble-left::after {
+            border-width: 8px;
+            border-top-color: var(--bg-light);
+            border-left-color: var(--bg-light);
+            bottom: -14px;
+            left: 20px;
+        }
+        .bubble-left::before {
+            border-width: 10px;
+            border-top-color: var(--text-light);
+            border-left-color: var(--text-light);
+            bottom: -18px;
+            left: 18px;
+        }
+        .dark .bubble-left::after { border-top-color: var(--bg-dark); border-left-color: var(--bg-dark); }
+        .dark .bubble-left::before { border-top-color: var(--text-dark); border-left-color: var(--text-dark); }
+        
+        .bubble-right::after {
+            border-width: 8px;
+            border-top-color: var(--bg-light);
+            border-right-color: var(--bg-light);
+            bottom: -14px;
+            right: 20px;
+        }
+        .bubble-right::before {
+            border-width: 10px;
+            border-top-color: var(--text-light);
+            border-right-color: var(--text-light);
+            bottom: -18px;
+            right: 18px;
+        }
+        .dark .bubble-right::after { border-top-color: var(--bg-dark); border-right-color: var(--bg-dark); }
+        .dark .bubble-right::before { border-top-color: var(--text-dark); border-right-color: var(--text-dark); }
+
+        /* Centered speech bubble pointer */
+        .bubble-middle::after {
+            /* smaller (inner) triangle */
+            border-width: 8px 8px 0 8px;
+            border-top-color: var(--bg-light);
+            bottom: -8px; /* moved up to touch the bubble */
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .bubble-middle::before {
+            /* slightly larger (outline) triangle */
+            border-width: 10px 10px 0 10px;
+            border-top-color: var(--text-light);
+            bottom: -11px; /* moved up to sit directly under the bubble outline */
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .dark .bubble-middle::after { border-top-color: var(--bg-dark); }
+        .dark .bubble-middle::before { border-top-color: var(--text-dark); }
+        
+        /* Loading Bar Styles */
+        .loading-bar-container {
+            height: 25px;
+            width: 250px;
+            border: 3px solid var(--text-light);
+            box-shadow: 4px 4px 0 0 var(--text-light);
+            background-color: transparent;
+            border-radius: 8px;       /* rounded corners for the container */
+            overflow: hidden;        /* ensure inner bar respects container rounding */
+        }
+        .dark .loading-bar-container {
+            border-color: var(--text-dark);
+            box-shadow: 4px 4px 0 0 var(--text-dark);
+        }
+        .loading-bar {
+            height: 100%;
+            background-color: var(--accent-light);
+            width: 0%;
+            transition: width 0.5s ease-out;
+            /* Simulating pixel blocks for progress */
+            background-image: linear-gradient(to right, 
+            var(--accent-light) 0%, var(--accent-light) 50%, 
+            transparent 50%, transparent 100%);
+            background-size: 15px 100%;
+            animation: none; /* Controlled by JS */
+            border-radius: 6px; /* rounded corners for the progress fill */
+        }
+        .dark .loading-bar {
+            background-color: var(--accent-dark);
+             background-image: linear-gradient(to right, 
+            var(--accent-dark) 0%, var(--accent-dark) 50%, 
+            transparent 50%, transparent 100%);
+        }
+
+        /* Helper for the unique Nana text */
+        .nana-accent {
+            color: var(--accent-light);
+        }
+        .dark .nana-accent {
+            color: var(--accent-dark);
+        }
+
+        /* Social icons in Contact section (using inline SVG for pixel look) */
+        .social-icon {
+            fill: var(--text-light);
+            transition: fill 0.3s;
+        }
+        .social-icon:hover {
+            fill: var(--accent-light);
+        }
+        .dark .social-icon {
+            fill: var(--text-dark);
+        }
+        .dark .social-icon:hover {
+            fill: var(--accent-dark);
+        }
+
+        /* Simple Pixel Shadow for Icons/Text */
+        /* Removed .text-pixel-shadow rule */
+
+        /* SVG for Sun/Moon Icon */
+        .sun-moon-toggle {
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+    </style>
+</head>
+<body class="transition-colors duration-300">
+    <!-- Main Application Container --><div id="app-container" class="min-h-screen flex flex-col items-center justify-center p-4">
+
+        <!-- Header / Navigation (Visible on all pages except 'start') --><header id="header" class="w-full max-w-6xl fixed top-0 left-1/2 -translate-x-1/2 p-6 flex justify-center z-10 transition-opacity duration-300 opacity-0 pointer-events-none">
+            
+            <!-- Logo/Home Image -->
+            <style>
+                .home-icon { transition: filter 0.2s ease; filter: none; }
+                .dark .home-icon { filter: invert(1) brightness(2); }
+
+                /* Ensure moon uses currentColor and becomes bright in dark mode */
+                #moon-icon { color: #374151; } /* default (visible on light bg) */
+                .dark #moon-icon { color: #facc15; } /* bright moon color in dark mode */
+                /* keep sun color obvious in light mode */
+                #sun-icon { color: #facc15; }
+
+                /* Mobile: hide the regular nav + home icon, show mobile menu button */
+                .mobile-menu-button { display: none; }
+                @media (max-width: 640px) {
+                    .home-button { display: none; }           /* hide home on mobile */
+                    .desktop-nav { display: none; }          /* hide desktop nav on mobile */
+                    .mobile-menu-button { display: block; }  /* show hamburger on mobile */
+                }
+            </style>
+
+            <!-- Mobile menu button (visible only on small screens) -->
+            <button id="mobile-menu-button" class="mobile-menu-button absolute top-6 left-4 p-2 rounded-md" aria-label="Open menu"
+                onclick="(function(e){ e.stopPropagation(); toggleMobileMenu(); })(event)">
+                <!-- Simple hamburger (SVG) -->
+                <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M3 6h18M3 12h18M3 18h18"></path>
+                </svg>
+            </button>
+
+            <!-- Mobile dropdown (hidden by default) -->
+            <div id="mobile-menu" class="hidden absolute top-16 left-4 z-30 px-2 py-2 w-44 bg-white dark:bg-gray-800 border-2 border-current rounded-md shadow-lg"
+                 onclick="event.stopPropagation()">
+                <button class="w-full text-left px-3 py-2 pixel-button mb-2" onclick="(function(){ navigateTo('start'); closeMobileMenu(); })()">HOME</button>
+                <button class="w-full text-left px-3 py-2 pixel-button mb-2" onclick="(function(){ navigateTo('about'); closeMobileMenu(); })()">ABOUT</button>
+                <button class="w-full text-left px-3 py-2 pixel-button mb-2" onclick="(function(){ navigateTo('projects'); closeMobileMenu(); })()">PROJECTS</button>
+                <button class="w-full text-left px-3 py-2 pixel-button" onclick="(function(){ navigateTo('contact'); closeMobileMenu(); })()">CONTACT</button>
+            </div>
+
+            <button onclick="navigateTo('start')" class="home-button absolute top-6 left-6 md:left-8 lg:left-12 font-bold text-sm hover:underline" aria-label="Go to Home/About">
+                <img id="home-icon" src="media/home.png" alt="Home" class="w-6 h-6 object-contain home-icon" style="transition: transform 0.15s ease; will-change: transform;"
+                     onmouseover="this.style.transform='scale(1.12)';" onmouseout="this.style.transform='scale(1)';">
+            </button>
+
+            <!-- Dark Mode Toggle --><div id="theme-toggle" class="sun-moon-toggle absolute top-6 right-6 flex items-center space-x-2" onclick="(function(){ if(isDarkMode){ var s=document.getElementById('lightmode-sound'); if(s){ s.currentTime=0; s.play().catch(function(){}); } } else { var s=document.getElementById('darkmode-sound'); if(s){ s.currentTime=0; s.play().catch(function(){}); } } toggleDarkMode(); })()">
+                <audio id="darkmode-sound" src="media/darkmode.mp3" preload="auto"></audio>
+                <audio id="lightmode-sound" src="media/lightmode.mp3" preload="auto"></audio>
+                <!-- Sun Icon --><svg id="sun-icon" class="w-5 h-5" style="display:none;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <!-- Use currentColor so CSS controls color; ensure rays use stroke=currentColor and are visible -->
+                    <circle cx="12" cy="12" r="5" fill="currentColor" />
+                    <g stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none">
+                        <path d="M12 2v2"/>
+                        <path d="M12 20v2"/>
+                        <path d="M4.22 4.22l1.42 1.42"/>
+                        <path d="M18.36 18.36l1.42 1.42"/>
+                        <path d="M2 12h2"/>
+                        <path d="M20 12h2"/>
+                        <path d="M4.22 19.78l1.42-1.42"/>
+                        <path d="M18.36 5.64l1.42-1.42"/>
+                    </g>
+                </svg>
+                <!-- Moon Icon --><svg id="moon-icon" class="w-5 h-5" style="display:none;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor" aria-hidden="true">
+                    <!-- Full moon path uses fill=currentColor so CSS controls its visible color -->
+                    <path d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9 9.003 9 9 0 008.354-5.646z"/>
+                </svg>
+                <div class="w-6 h-3 border-2 border-current rounded-full relative">
+                    <!-- Center vertically without using transform (so JS translateX won't remove vertical centering) -->
+                    <div id="mode-slider" class="absolute inset-y-0 left-0.5 my-auto w-2 h-2 bg-current rounded-full transition-transform duration-300"></div>
+                </div>
+            </div>
+
+            <!-- Navigation Buttons --><nav class="desktop-nav flex space-x-4">
+                <button id="nav-about" onclick="navigateTo('about')" class="pixel-button px-6 py-2">ABOUT</button>
+                <button id="nav-projects" onclick="navigateTo('projects')" class="pixel-button px-6 py-2">PROJECTS</button>
+                <button id="nav-contact" onclick="navigateTo('contact')" class="pixel-button px-6 py-2">CONTACT</button>
+            </nav>
+        </header>
+
+        <!-- Main Content Area --><main id="content" class="w-full max-w-6xl flex flex-col items-center justify-center flex-grow p-4 mt-32">
+            <!-- Content will be rendered here by JavaScript --></main>
+
+        <!-- Avatar Character (Always positioned at the bottom-left/center) -->
+        <style>
+            /* Hide avatar + its speech bubble while the start or loading screens are rendered inside #app-container */
+            #app-container:has(#start-button) #avatar-container,
+            #app-container:has(#loading-bar) #avatar-container {
+                display: none !important;
+            }
+
+            /* Hide avatar and speech bubble on small screens (mobile <= 640px) */
+            @media (max-width: 640px) {
+                #avatar-container,
+                #avatar-container #speech-bubble {
+                    display: none !important;
+                    pointer-events: none !important;
+                }
+            }
+        </style>
+
+        <div id="avatar-container" class="fixed bottom-0 left-0 p-4 transition-transform duration-500 hidden sm:block">
+                <!-- Avatar Image (Placeholder that mimics the size/position) -->
+                <img id="avatar-img" src="media/avatar.png" 
+                         alt="Pixel Avatar of Nana" 
+                         class="w-20 h-24 object-cover object-top" 
+                         style="margin-left: 20px;">
+                
+                <!-- Speech Bubble (Positioned above the avatar) -->
+                <div id="speech-bubble" class="speech-bubble bubble-left absolute bottom-24 left-10 transition-opacity duration-300 opacity-0 pointer-events-none">
+                        <!-- Text inside the bubble -->
+                </div>
+        </div>
+
+    </div>
+
+    <script>
+        // --- GLOBAL STATE & DOM ELEMENTS ---
+        let currentPage = 'start'; 
+        let isDarkMode = false;
+        const appContainer = document.getElementById('app-container');
+        const content = document.getElementById('content');
+        const header = document.getElementById('header');
+        const speechBubble = document.getElementById('speech-bubble');
+        const modeSlider = document.getElementById('mode-slider');
+        const sunIcon = document.getElementById('sun-icon');
+        const moonIcon = document.getElementById('moon-icon');
+        const avatarContainer = document.getElementById('avatar-container');
+
+        // Click sound (plays on every <button> click)
+        const clickSound = new Audio('media/click.mp3');
+        clickSound.preload = 'auto';
+
+        // Helper to play click sound (safe fallback)
+        function playClick() {
+            try {
+                clickSound.currentTime = 0;
+                clickSound.play().catch(() => { /* ignore play errors */ });
+            } catch (e) { /* ignore */ }
+        }
+
+        // Header delegation: ensure any nav/home/mobile menu clicks play the click sound
+        if (header) {
+            header.addEventListener('click', (e) => {
+                const el = e.target.closest('button, a');
+                if (!el) return;
+                // Play for home button, nav buttons, mobile menu button and mobile dropdown items
+                playClick();
+            });
+        }
+
+        // Mobile dropdown container (buttons inside #mobile-menu)
+        const mobileMenu = document.getElementById('mobile-menu');
+        if (mobileMenu) {
+            mobileMenu.addEventListener('click', (e) => {
+                const el = e.target.closest('button, a');
+                if (!el) return;
+                playClick();
+            });
+        }
+
+        // Keep a body-level fallback for any button clicks (covers unexpected cases)
+        document.body.addEventListener('click', (e) => {
+            const btn = e.target.closest('button');
+            if (!btn) return;
+            if (btn.disabled) return;
+            playClick();
+        });
+        
+        // Project data for the carousel
+        const projects = [
+            {
+                title: "Tic Tac Toe",
+                description: "Classic game built using HTML, CSS and JavaScript",
+                image: "media/Tic tac toe.gif",
+                codeUrl: "https://github.com/pixelsbynana/Tic-tac-toe-game",
+                demoUrl: "https://pixelsbynana.github.io/Tic-tac-toe-game/"
+            },
+            {
+                title: "Weather App",
+                description: "Weather app built using HTML, CSS, and JavaScript.",
+                image: "media/Weather app.gif",
+                codeUrl: "#",
+                demoUrl: "#"
+            },
+            {
+                title: "Calculator",
+                description: "Basic calculator built using HTML, CSS, and JavaScript",
+                image: "media/Calculator GIF.gif",
+                codeUrl: "https://github.com/pixelsbynana/calculator",
+                demoUrl: "https://pixelsbynana.github.io/calculator/"
+            }
+        ];
+        let currentProjectIndex = 0;
+
+
+        // --- DARK MODE LOGIC ---
+        function toggleDarkMode() {
+            isDarkMode = !isDarkMode;
+            if (isDarkMode) {
+                document.documentElement.classList.add('dark');
+                modeSlider.style.transform = 'translateX(100%)';
+                // In dark mode show moon, hide sun
+                moonIcon.style.display = 'block';
+                sunIcon.style.display = 'none';
+            } else {
+                document.documentElement.classList.remove('dark');
+                modeSlider.style.transform = 'translateX(0)';
+                // In light mode show sun, hide moon
+                sunIcon.style.display = 'block';
+                moonIcon.style.display = 'none';
+            }
+            // Re-render to ensure all custom CSS variables are applied correctly
+            renderPage(currentPage);
+        }
+        
+        // Initial setup for dark mode based on system preference (optional)
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            // Uncomment the next line if you want dark mode to be the default
+            // toggleDarkMode(); 
+        }
+
+        // --- NAVIGATION & RENDERING LOGIC ---
+
+        function updateSpeechBubble(text, position = 'left') {
+            speechBubble.innerHTML = text;
+            speechBubble.classList.remove('bubble-left', 'bubble-right');
+            speechBubble.classList.add(`bubble-${position}`);
+            speechBubble.classList.remove('opacity-0', 'pointer-events-none');
+            speechBubble.classList.add('opacity-100', 'pointer-events-auto');
+        }
+
+        function hideSpeechBubble() {
+            speechBubble.classList.add('opacity-0', 'pointer-events-none');
+        }
+
+        function updateNav(activePage) {
+            ['about', 'projects', 'contact'].forEach(id => {
+                const btn = document.getElementById(`nav-${id}`);
+                if (btn) {
+                    btn.classList.remove('nav-active');
+                    if (id === activePage) {
+                        btn.classList.add('nav-active');
+                    }
+                }
+            });
+            // Show header/nav only if not on start screen
+            if (activePage === 'start') {
+                header.classList.remove('opacity-100', 'pointer-events-auto');
+                header.classList.add('opacity-0', 'pointer-events-none');
+                avatarContainer.classList.add('hidden');
+            } else {
+                header.classList.add('opacity-100', 'pointer-events-auto');
+                header.classList.remove('opacity-0', 'pointer-events-none');
+                avatarContainer.classList.remove('hidden');
+            }
+        }
+
+        function navigateTo(page = 'start') {
+            if (currentPage === page) return;
+
+            // Clear old content
+            content.classList.add('opacity-0');
+            setTimeout(() => {
+                currentPage = page;
+                renderPage(page);
+                content.classList.remove('opacity-0');
+            }, 300); // Wait for fade out
+        }
+
+        function renderPage(page) {
+            let html = '';
+            let bubbleText = '';
+            
+            updateNav(page);
+            hideSpeechBubble();
+
+            switch (page) {
+                case 'start':
+                    // Image 1.png
+                    html = `
+                        <div class="flex flex-col items-center justify-center h-full text-center">
+                            <div class="speech-bubble bubble-middle mb-4">Hi, welcome!</div>
+                            <img src="media/avatar.png" 
+                                 alt="Pixel Avatar of Nana" 
+                                 class="w-24 h-32 object-cover object-top mb-12">
+                            <button id="start-button" class="pixel-button start-button text-xl font-extrabold px-12 py-4 mb-4">START</button>
+                            <p class="text-xs tracking-widest">CLICK TO CONTINUE</p>
+                        </div>
+                    `;
+                    content.innerHTML = html;
+                    document.getElementById('start-button').addEventListener('click', () => {
+                        // Simulate loading then navigate to about
+                        renderLoading();
+                    });
+                    // Hide character container for start screen layout
+                    avatarContainer.classList.add('hidden');
+                    break;
+
+                case 'loading':
+                    // Image 2.png
+                    html = `
+                        <div class="flex flex-col items-center justify-center h-full text-center">
+                            <div class="speech-bubble bubble-middle mb-4">Hi, welcome!</div>
+                            <img src="media/avatar.png" 
+                                 alt="Pixel Avatar of Nana" 
+                                 class="w-24 h-32 object-cover object-top mb-12">
+                            
+                            <p class="mb-4 tracking-widest">LOADING...</p>
+                            <div class="loading-bar-container">
+                                <div id="loading-bar" class="loading-bar"></div>
+                            </div>
+                        </div>
+                    `;
+                    content.innerHTML = html;
+                    // Trigger the loading animation
+                    startLoadingAnimation();
+                    avatarContainer.classList.add('hidden');
+                    break;
+                    
+                case 'about':
+                    // Image 3.png
+                    bubbleText = "A little bit about me...";
+                    html = `
+                        <div class="flex flex-col md:flex-row items-center justify-center w-full max-w-3xl p-8" style="margin-top: -4rem;">
+                            <div class="md:w-4/5 text-center md:text-left mb-6 md:mb-0">
+                                <h1 class="text-4xl sm:text-5xl font-extrabold mb-4">
+                                    <span>Hi, I'm</span> <span class="nana-accent">Nana</span>
+                                </h1>
+                                <p class="text-xl sm:text-2xl mb-4">Doctor turned aspiring software engineer</p>
+                                
+                                <p class="mb-3">
+                                    I'm a medical doctor in the UK, transitioning into tech. Currently pursuing my Master's in Computer Science.
+                                </p>
+                                <p>
+                                    I love good food, bubble tea, and playing with my cat, Mochi.
+                                </p>
+                            </div>
+                            <div class="md:w-2/5 flex justify-center md:justify-end">
+                                <img src="media/profile pic.JPG" 
+                                     alt="Profile photo of Nana" 
+                                     class="pixel-box w-36 h-44 object-cover object-top rounded-lg"
+                                     style="border-radius: 8px;">
+                            </div>
+                        </div>
+                    `;
+                    content.innerHTML = html;
+                    updateSpeechBubble(bubbleText);
+                    break;
+
+                case 'projects':
+                    // Image 4.png
+                    bubbleText = "These projects were fun to create!";
+                    html = `
+                        <div class="flex flex-col items-center justify-center w-full max-w-md sm:max-w-3xl md:max-w-7xl p-4 text-center">
+                            <h2 class="text-4xl font-extrabold mb-8 sm:mb-12">
+                                <span id="project-title"></span>
+                            </h2>
+                            <div class="flex items-center justify-center w-full">
+                                <!-- Previous Project Button (image) -->
+                                <button onclick="changeProject(-1)" aria-label="Previous project" class="flex-shrink-0 mx-4 sm:mx-24 md:mx-32 lg:mx-40 p-0 bg-transparent border-0">
+                                    <img src="media/left-button.png" alt="Previous project" class="w-8 h-8 sm:w-10 sm:h-10 transform transition-transform duration-150 hover:scale-110">
+                                </button>
+                                
+                                <!-- Project Card -->
+                                <div id="project-card-container" class="flex flex-col items-center transition-opacity duration-300 w-full sm:w-11/12 md:w-2/3 lg:w-2/5">
+                                    <div class="p-4 pixel-box bg-white dark:bg-gray-700 mb-6 w-40 h-56 sm:w-56 sm:h-72 flex items-center justify-center">
+                                        <img id="project-image" src="" alt="Project Preview" class="w-36 h-48 sm:w-48 sm:h-64 object-cover object-top">
+                                    </div>
+                                    <p id="project-description" class="text-base sm:text-lg max-w-sm mb-6"></p>
+                                    <div class="flex space-x-3">
+                                        <a id="code-link" href="#" target="_blank" class="pixel-button px-4 py-2 sm:px-6 sm:py-2"
+                                           onclick="(function(){var s=document.getElementById('project-click'); if(s){s.currentTime=0; s.play().catch(function(){});} })()">CODE</a>
+                                        <a id="demo-link" href="#" target="_blank" class="pixel-button px-4 py-2 sm:px-6 sm:py-2"
+                                           onclick="(function(){var s=document.getElementById('project-click'); if(s){s.currentTime=0; s.play().catch(function(){});} })()">DEMO</a>
+                                        <audio id="project-click" src="media/click2.mp3" preload="auto"></audio>
+                                    </div>
+                                </div>
+
+                                <!-- Next Project Button (image) -->
+                                <button onclick="changeProject(1)" aria-label="Next project" class="flex-shrink-0 mx-4 sm:mx-24 md:mx-32 lg:mx-40 p-0 bg-transparent border-0">
+                                    <img src="media/right-button.png" alt="Next project" class="w-8 h-8 sm:w-10 sm:h-10 transform transition-transform duration-150 hover:scale-110">
+                                </button>
+                            </div>
+
+                            <!-- Pagination Dots --><div id="project-dots" class="flex space-x-2 mt-8 sm:mt-12">
+                                ${projects.map((_, index) => `<div class="dot w-3 h-3 rounded-full bg-gray-400 dark:bg-gray-600 cursor-pointer" onclick="goToProject(${index})"></div>`).join('')}
+                            </div>
+                        </div>
+                    `;
+                    content.innerHTML = html;
+                    updateProjectDisplay();
+                    updateSpeechBubble(bubbleText);
+                    break;
+
+                case 'contact':
+                    // Image 5.png
+                    bubbleText = "Let's get in touch!";
+                    html = `
+                        <div class="flex flex-col items-center justify-center w-full max-w-3xl p-8 text-center">
+                            <img src="media/envelope.png" alt="Envelope" class="w-24 h-16 mb-8 object-contain">
+
+                            <p class="mb-6 text-xl">
+                                Hey there, thank you for wanting to get in touch.
+                            </p>
+                            <p class="mb-10 text-xl font-bold">
+                                For any enquiries or chit-chat, you can email me at <br class="hidden sm:block">
+                                <a href="mailto:musingful@gmail.com" class="nana-accent hover:underline">musingful[at]gmail.com.</a>
+                            </p>
+
+                            <p class="mb-6 text-lg">You can also find me here:</p>
+
+                            <!-- Social Icons (Using simple SVGs) --><div class="flex space-x-6">
+                                <style>
+                                    .social-img {
+                                        transition: transform 0.15s ease, filter 0.2s ease;
+                                        transform-origin: center;
+                                        will-change: transform;
+                                        filter: none;
+                                    }
+                                    .social-img:hover {
+                                        transform: scale(1.15);
+                                    }
+                                    .dark .social-img {
+                                        filter: brightness(0) invert(1);
+                                    }
+                                    .dark .social-img:hover {
+                                        transform: scale(1.15);
+                                    }
+                                </style>
+                                <!-- LinkedIn --><a href="https://www.linkedin.com/in/pixelsbynana/" target="_blank" aria-label="LinkedIn"
+                                    onclick="(function(){var s=document.getElementById('social-click'); if(s){s.currentTime=0; s.play().catch(function(){});} })()">
+                                    <img src="media/linkedin.png" alt="LinkedIn" class="social-img w-8 h-8">
+                                </a>
+                                <!-- GitHub --><a href="https://github.com/pixelsbynana" target="_blank" aria-label="GitHub"
+                                    onclick="(function(){var s=document.getElementById('social-click'); if(s){s.currentTime=0; s.play().catch(function(){});} })()">
+                                    <img src="media/github.png" alt="GitHub" class="social-img w-8 h-8">
+                                </a>
+                                <!-- Twitter/X --><a href="https://x.com/pixelsbynana" target="_blank" aria-label="Twitter/X"
+                                    onclick="(function(){var s=document.getElementById('social-click'); if(s){s.currentTime=0; s.play().catch(function(){});} })()">
+                                    <img src="media/twitter.png" alt="Twitter/X" class="social-img w-8 h-8">
+                                </a>
+                                <!-- Instagram --><a href="https://www.instagram.com/pixelsbynana" target="_blank" aria-label="Instagram"
+                                    onclick="(function(){var s=document.getElementById('social-click'); if(s){s.currentTime=0; s.play().catch(function(){});} })()">
+                                    <img src="media/instagram.png" alt="Instagram" class="social-img w-8 h-8">
+                                </a>
+
+                                <!-- Hidden audio element for social icon clicks -->
+                                <audio id="social-click" src="media/click2.mp3" preload="auto"></audio>
+                            </div>
+                        </div>
+                    `;
+                    content.innerHTML = html;
+                    updateSpeechBubble(bubbleText);
+                    break;
+            }
+        }
+        
+        // --- LOADING BAR ANIMATION ---
+        function startLoadingAnimation() {
+            const loadingBar = document.getElementById('loading-bar');
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 20; // Increase progress
+                loadingBar.style.width = `${progress}%`;
+                
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        navigateTo('about'); // Transition to the About page
+                    }, 500);
+                }
+            }, 100); // 5 intervals * 100ms = 500ms total
+        }
+
+        function renderLoading() {
+            // Renders the loading screen and starts the animation
+            currentPage = 'loading';
+            renderPage('loading');
+        }
+
+        // --- PROJECTS CAROUSEL LOGIC ---
+        function updateProjectDisplay() {
+            const project = projects[currentProjectIndex];
+            
+            document.getElementById('project-title').textContent = project.title;
+            document.getElementById('project-image').src = project.image;
+            document.getElementById('project-description').textContent = project.description;
+            document.getElementById('code-link').href = project.codeUrl;
+            document.getElementById('demo-link').href = project.demoUrl;
+            
+            // Update dots
+            document.querySelectorAll('#project-dots .dot').forEach((dot, index) => {
+                dot.classList.remove('bg-black', 'dark:bg-white', 'bg-gray-400', 'dark:bg-gray-600');
+                if (index === currentProjectIndex) {
+                    dot.classList.add(isDarkMode ? 'bg-white' : 'bg-black');
+                } else {
+                    dot.classList.add(isDarkMode ? 'bg-gray-600' : 'bg-gray-400');
+                }
+            });
+        }
+
+        function changeProject(direction) {
+            const cardContainer = document.getElementById('project-card-container');
+            // Fade out
+            cardContainer.classList.add('opacity-0');
+
+            setTimeout(() => {
+                currentProjectIndex = (currentProjectIndex + direction + projects.length) % projects.length;
+                updateProjectDisplay();
+                // Fade in
+                cardContainer.classList.remove('opacity-0');
+            }, 300);
+        }
+
+        function goToProject(index) {
+            const cardContainer = document.getElementById('project-card-container');
+            // Fade out
+            cardContainer.classList.add('opacity-0');
+
+            setTimeout(() => {
+                currentProjectIndex = index;
+                updateProjectDisplay();
+                // Fade in
+                cardContainer.classList.remove('opacity-0');
+            }, 300);
+        }
+
+
+        // --- INITIALIZATION ---
+        window.onload = () => {
+            // Default to light mode: show sun icon
+            isDarkMode = false;
+            document.documentElement.classList.remove('dark');
+            modeSlider.style.transform = 'translateX(0)';
+            sunIcon.style.display = 'block';
+            moonIcon.style.display = 'none';
+
+            renderPage('start');
+        };
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            if (!menu) return;
+            menu.classList.toggle('hidden');
+        }
+
+        function closeMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            if (!menu) return;
+            menu.classList.add('hidden');
+        }
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('#mobile-menu') && !e.target.closest('#mobile-menu-button')) {
+                closeMobileMenu();
+            }
+        });
+
+        // Prevent header opacity toggles from hiding mobile controls when needed
+        header.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+    </script>
+</body>
+</html>
