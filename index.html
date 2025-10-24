@@ -285,8 +285,14 @@
                 </svg>
             </button>
 
+            <style>
+                /* Make mobile menu background follow the CSS variables used for the page */
+                #mobile-menu { background-color: var(--bg-light); }
+                .dark #mobile-menu { background-color: var(--bg-dark); }
+            </style>
+
             <!-- Mobile dropdown (hidden by default) -->
-            <div id="mobile-menu" class="hidden absolute top-16 left-4 z-30 px-2 py-2 w-44 bg-white dark:bg-gray-800 border-2 border-current rounded-md shadow-lg"
+            <div id="mobile-menu" class="hidden absolute top-16 left-4 z-30 px-2 py-2 w-44 border-2 border-current rounded-md shadow-lg"
                  onclick="event.stopPropagation()">
                 <button class="w-full text-left px-3 py-2 pixel-button mb-2" onclick="(function(){ navigateTo('start'); closeMobileMenu(); })()">HOME</button>
                 <button class="w-full text-left px-3 py-2 pixel-button mb-2" onclick="(function(){ navigateTo('about'); closeMobileMenu(); })()">ABOUT</button>
