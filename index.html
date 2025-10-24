@@ -249,6 +249,15 @@
             cursor: pointer;
             transition: transform 0.2s;
         }
+
+        /* Disable scrolling on small screens (mobile) */
+        @media (max-width: 640px) {
+            html, body {
+                overflow: hidden;       /* prevent page scroll */
+                height: 100%;           /* ensure no scrollable height */
+                touch-action: none;     /* prevent touch-based panning */
+            }
+        }
     </style>
 </head>
 <body class="transition-colors duration-300">
