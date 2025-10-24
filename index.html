@@ -258,6 +258,35 @@
                 touch-action: none;     /* prevent touch-based panning */
             }
         }
+
+        /* Mobile layout tweaks: reduce gap between header and content and center content */
+        @media (max-width: 640px) {
+            /* make header full-width and reduce its padding so it takes less vertical space */
+            header#header {
+                left: 0;
+                transform: none;
+                max-width: none;
+                width: 100%;
+                padding: 0.5rem 0.75rem;
+                justify-content: flex-start;
+            }
+
+            /* nudge mobile menu button into the header padding */
+            #mobile-menu-button {
+                left: 0.75rem;
+                top: 0.5rem;
+            }
+
+            /* reduce main top margin (overrides Tailwind mt-32) and center content */
+            #content {
+                margin-top: 0.5rem !important;
+                padding-top: 0.25rem;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+                min-height: calc(100vh - 3.25rem); /* viewport minus approximate header height */
+            }
+        }
     </style>
 </head>
 <body class="transition-colors duration-300">
